@@ -17,6 +17,11 @@
   max-width: 100%;
   outline: 1px solid gray;
   background: white;
+  text-align: center;
+}
+
+.ValueField {
+  color: lightcyan;
 }
 
 .Hint {

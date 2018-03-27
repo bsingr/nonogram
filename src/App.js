@@ -5,7 +5,6 @@ class EmptyHint extends Component {
   render() {
     return (
       <div className="Field EmptyHint" style={{height: `${this.props.height}px`}}>
-        -
       </div>
     );
   }
@@ -22,9 +21,23 @@ class Hint extends Component {
 }
 
 class Field extends Component {
+  constructor(props) {
+    super(props)
+    this.click = this.click.bind(this);
+  }
+  click() {
+    this.props.onClick(this.props.idx, this.props.userValue + 1 % 3)
+  }
   render() {
     return (
-      <div className="Field" style={{height: `${this.props.height}px`}}>
+      <div className="Field ValueField" onClick={this.click} style={{
+        height: `${this.props.height}px`,
+        backgroundColor: [
+          'white',
+          'green',
+          'red'
+        ][this.props.userValue]
+      }}>
         {this.props.value}
       </div>
     );
@@ -126,22 +139,35 @@ function fillLeft(streak, size) {
   return missing.concat(streak);
 }
 
-function populate(size) {
+function populate(size, value) {
   const arr = [];
   for (let i = 0; i < size; i++) {
-    arr.push(undefined)
+    arr.push(value)
   }
   return arr;
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.onClickField = this.onClickField.bind(this)
+    const yFields = 10;
+    const xFields = 10;
+    this.state = {
+      map: createMap(xFields,yFields),
+      userValueMap: populate(xFields * yFields, 0)
+    }
+  }
+  onClickField(idx, value) {
+    const map = [].concat(this.state.userValueMap)
+    map[idx] = value
+    this.setState({userValueMap: map})
+  }
   render() {
-    const yFields = 3;
-    const xFields = 3;
-    const map = createMap(xFields,yFields)
+    const map = this.state.map
     const yHints = maxVerticalHints(map);
     const xHints = maxHorizontalHints(map);
-    const fieldHeight = window.innerHeight / (yHints + yFields);
+    const fieldHeight = window.innerHeight / (yHints + map.y);
     return (
       <div className="App">
         {populate(yHints).map((_, rowIdx) => {
@@ -172,7 +198,7 @@ class App extends Component {
                 }
               })}
               {row.map((node, nodeIdx) => {
-                return <Field key={nodeIdx} height={fieldHeight} value={node} />;
+                return <Field key={nodeIdx} height={fieldHeight} value={node} idx={rowIdx * row.length + nodeIdx} userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]} onClick={this.onClickField} />;
               })}
             </div>
           )
