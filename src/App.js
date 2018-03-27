@@ -126,6 +126,14 @@ function fillLeft(streak, size) {
   return missing.concat(streak);
 }
 
+function populate(size) {
+  const arr = [];
+  for (let i = 0; i < size; i++) {
+    arr.push(undefined)
+  }
+  return arr;
+}
+
 class App extends Component {
   render() {
     const yFields = 3;
@@ -136,6 +144,23 @@ class App extends Component {
     const fieldHeight = window.innerHeight / (yHints + yFields);
     return (
       <div className="App">
+        {populate(yHints).map((_, rowIdx) => {
+          return (
+            <div key={rowIdx} className="Row">
+              {populate(xHints).map((_, colIdx) => {
+                return <EmptyHint key={colIdx} height={fieldHeight} />;
+              })}
+              {cols(map).map((col, colIdx) => {
+                const hint = fillLeft(hints(col), yHints)[rowIdx]
+                if (hint) {
+                  return <Hint key={colIdx} height={fieldHeight} value={hint} />;
+                } else {
+                  return <EmptyHint key={colIdx} height={fieldHeight} />;
+                }
+              })}
+            </div>
+          )
+        })}
         {rows(map).map((row, rowIdx) => {
           return (
             <div key={rowIdx} className="Row">
