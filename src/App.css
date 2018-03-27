@@ -22,3 +22,7 @@
 .Hint {
   background: gray;
 }
+
+.EmptyHint {
+  background: white;
+}
