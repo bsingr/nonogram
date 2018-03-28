@@ -75,7 +75,7 @@ class Field extends Component {
 function createMap(x,y) {
   const map = []
   for (let i = 0; i < (x * y); i++) {
-    map.push(Math.random() > 0.4 ? 1 : 0)
+    map.push(Math.random() > 0.44 ? 1 : 0)
   }
   map.x = x
   map.y = y
