@@ -75,7 +75,7 @@ class Field extends Component {
 function createMap(x,y) {
   const map = []
   for (let i = 0; i < (x * y); i++) {
-    map.push(Math.random() > 0.5 ? 1 : 0)
+    map.push(Math.random() > 0.4 ? 1 : 0)
   }
   map.x = x
   map.y = y
@@ -210,8 +210,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.onClickField = this.onClickField.bind(this)
-    const yFields = 10;
-    const xFields = 10;
+    const yFields = 20;
+    const xFields = 20;
     this.state = {
       map: createMap(xFields,yFields),
       userValueMap: createUserMap(xFields, yFields)
