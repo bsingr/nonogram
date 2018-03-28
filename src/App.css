@@ -2,14 +2,22 @@
 
 }
 
+.Timer {
+  position: absolute;
+  color: gray;
+}
+
 .Overlay {
   position: absolute;
-  left: 33%;
-  top: 33%;
-  width: 33%;
-  height: 33%;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
   font-size: 5em;
   text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .Row {
@@ -20,6 +28,7 @@
 }
 
 .Field {
+  display: flex;
   box-sizing: border-box;
   flex: 0 0 auto;
   flex-grow: 1;
@@ -28,6 +37,8 @@
   outline: 1px solid gray;
   background: white;
   text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .RowComplete {

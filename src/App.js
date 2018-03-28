@@ -1,6 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
 
+class Timer extends Component {
+  constructor() {
+    super()
+    this.state = {duration: 0}
+    this.state.interval = setInterval(() => {
+      this.setState({duration: this.state.duration + 1})
+    }, 1000)
+  }
+  render() {
+    return (
+      <div className="Timer">
+        {Math.floor(this.state.duration / 3600)}h {Math.floor(this.state.duration / 60)}m {this.state.duration % 60}s
+      </div>
+    );
+  }
+}
+
+
 class Overlay extends Component {
   render() {
     return (
@@ -214,7 +232,8 @@ class App extends Component {
     const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
-        {mapIsComplete ? <Overlay>Done!</Overlay> : ''}
+        <Timer />
+        {mapIsComplete ? <Overlay>Done. Congratulations!</Overlay> : ''}
         {populate(yHints).map((_, rowIdx) => {
           return (
             <div key={rowIdx} className="Row">
