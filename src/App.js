@@ -255,14 +255,14 @@ class App extends Component {
           return (
             <div key={rowIdx} className="Row">
               {populate(xHints).map((_, colIdx) => {
-                return <EmptyHint key={colIdx} height={fieldHeight} />;
+                return <EmptyHint key={colIdx} />;
               })}
               {cols(map).map((col, colIdx) => {
                 const hint = fillLeft(hints(col), yHints)[rowIdx]
                 if (hint) {
-                  return <Hint key={colIdx} height={fieldHeight} value={hint} />;
+                  return <Hint key={colIdx} value={hint} />;
                 } else {
-                  return <EmptyHint key={colIdx} height={fieldHeight} />;
+                  return <EmptyHint key={colIdx} />;
                 }
               })}
             </div>
@@ -274,15 +274,14 @@ class App extends Component {
             <div key={rowIdx} className='Row'>
               {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
                 if (hint) {
-                  return <Hint key={hintIdx} height={fieldHeight} value={hint} />;
+                  return <Hint key={hintIdx} value={hint} />;
                 } else {
-                  return <EmptyHint key={hintIdx} height={fieldHeight} />;
+                  return <EmptyHint key={hintIdx} />;
                 }
               })}
               {row.map((node, nodeIdx) => {
                 const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
                 return <Field key={nodeIdx}
-                  height={fieldHeight}
                   helper={this.state.helper}
                   value={node}
                   idx={rowIdx * row.length + nodeIdx}
