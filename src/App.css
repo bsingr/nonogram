@@ -2,6 +2,16 @@
 
 }
 
+.Overlay {
+  position: absolute;
+  left: 33%;
+  top: 33%;
+  width: 33%;
+  height: 33%;
+  font-size: 5em;
+  text-align: center;
+}
+
 .Row {
   box-sizing: border-box;
   display: flex;
@@ -18,6 +28,14 @@
   outline: 1px solid gray;
   background: white;
   text-align: center;
+}
+
+.RowComplete {
+  opacity: 0.3;
+}
+
+.ColComplete {
+  opacity: 0.3;
 }
 
 .ValueField {

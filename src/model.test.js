@@ -16,6 +16,32 @@ it('gets rows', () => {
   ])
 });
 
+it('isComplete', () => {
+  expect(App.isComplete([0,1,0], [0,1,0])).toEqual(false)
+  expect(App.isComplete([0,1,0], [2,1,2])).toEqual(true)
+  expect(App.isComplete([0,1,0], [2,0,2])).toEqual(false)
+});
+
+it('gets rowForIdx', () => {
+  const map = App.createMap(2,3)
+  expect(App.rowForIdx(map, 0)).toEqual(0)
+  expect(App.rowForIdx(map, 1)).toEqual(0)
+  expect(App.rowForIdx(map, 2)).toEqual(1)
+  expect(App.rowForIdx(map, 3)).toEqual(1)
+  expect(App.rowForIdx(map, 4)).toEqual(2)
+  expect(App.rowForIdx(map, 5)).toEqual(2)
+});
+
+it('gets colForIdx', () => {
+  const map = App.createMap(2,3)
+  expect(App.colForIdx(map, 0)).toEqual(0)
+  expect(App.colForIdx(map, 1)).toEqual(1)
+  expect(App.colForIdx(map, 2)).toEqual(0)
+  expect(App.colForIdx(map, 3)).toEqual(1)
+  expect(App.colForIdx(map, 4)).toEqual(0)
+  expect(App.colForIdx(map, 5)).toEqual(1)
+});
+
 it('gets cols', () => {
   const map = App.createMap(2,3)
   expect(App.cols(map)).toEqual([

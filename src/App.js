@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 
+class Overlay extends Component {
+  render() {
+    return (
+      <div className="Overlay">
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
 class EmptyHint extends Component {
   render() {
     return (
@@ -26,11 +36,12 @@ class Field extends Component {
     this.click = this.click.bind(this);
   }
   click() {
-    this.props.onClick(this.props.idx, this.props.userValue + 1 % 3)
+    this.props.onClick(this.props.idx, (this.props.userValue + 1) % 3)
   }
   render() {
+    const className = `Field ValueField ${this.props.rowComplete ? 'RowComplete' : ''} ${this.props.colComplete ? 'ColComplete' : ''}`
     return (
-      <div className="Field ValueField" onClick={this.click} style={{
+      <div className={className} onClick={this.click} style={{
         height: `${this.props.height}px`,
         backgroundColor: [
           'white',
@@ -38,7 +49,6 @@ class Field extends Component {
           'red'
         ][this.props.userValue]
       }}>
-        {this.props.value}
       </div>
     );
   }
@@ -48,6 +58,16 @@ function createMap(x,y) {
   const map = []
   for (let i = 0; i < (x * y); i++) {
     map.push(Math.random() > 0.5 ? 1 : 0)
+  }
+  map.x = x
+  map.y = y
+  return map;
+}
+
+function createUserMap(x,y) {
+  const map = []
+  for (let i = 0; i < (x * y); i++) {
+    map.push(0)
   }
   map.x = x
   map.y = y
@@ -147,6 +167,27 @@ function populate(size, value) {
   return arr;
 }
 
+function rowForIdx(map, idx) {
+  return Math.floor(idx / map.x)
+}
+
+function colForIdx(map, idx) {
+  return idx % map.x
+}
+
+function isComplete(streak, userStreak) {
+  let complete = true
+  streak.forEach((node, nodeIdx) => {
+    if ((node === 0 && userStreak[nodeIdx] === 1) ||
+        (node === 1 && userStreak[nodeIdx] === 2) ||
+        (userStreak[nodeIdx] === 0)) {
+      complete = false
+      return
+    }
+  })
+  return complete
+}
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -155,21 +196,25 @@ class App extends Component {
     const xFields = 10;
     this.state = {
       map: createMap(xFields,yFields),
-      userValueMap: populate(xFields * yFields, 0)
+      userValueMap: createUserMap(xFields, yFields)
     }
   }
   onClickField(idx, value) {
-    const map = [].concat(this.state.userValueMap)
-    map[idx] = value
-    this.setState({userValueMap: map})
+    const userMap = [].concat(this.state.userValueMap)
+    userMap.x = this.state.userValueMap.x
+    userMap.y = this.state.userValueMap.y
+    userMap[idx] = value
+    this.setState({userValueMap: userMap})
   }
   render() {
     const map = this.state.map
     const yHints = maxVerticalHints(map);
     const xHints = maxHorizontalHints(map);
     const fieldHeight = window.innerHeight / (yHints + map.y);
+    const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
+        {mapIsComplete ? <Overlay>Done!</Overlay> : ''}
         {populate(yHints).map((_, rowIdx) => {
           return (
             <div key={rowIdx} className="Row">
@@ -188,8 +233,9 @@ class App extends Component {
           )
         })}
         {rows(map).map((row, rowIdx) => {
+          const rowComplete = isComplete(row, rows(this.state.userValueMap)[rowIdx])
           return (
-            <div key={rowIdx} className="Row">
+            <div key={rowIdx} className='Row'>
               {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
                 if (hint) {
                   return <Hint key={hintIdx} height={fieldHeight} value={hint} />;
@@ -198,7 +244,16 @@ class App extends Component {
                 }
               })}
               {row.map((node, nodeIdx) => {
-                return <Field key={nodeIdx} height={fieldHeight} value={node} idx={rowIdx * row.length + nodeIdx} userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]} onClick={this.onClickField} />;
+                const colComplete = isComplete(cols(map)[nodeIdx], cols(this.state.userValueMap)[nodeIdx])
+                return <Field key={nodeIdx}
+                  height={fieldHeight}
+                  value={node}
+                  idx={rowIdx * row.length + nodeIdx}
+                  userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}
+                  rowComplete={rowComplete}
+                  colComplete={colComplete}
+                  onClick={this.onClickField}
+                  />;
               })}
             </div>
           )
@@ -213,5 +268,9 @@ App.createMap = createMap;
 App.rows = rows;
 App.cols = cols;
 App.fillLeft = fillLeft;
+App.rowForIdx = rowForIdx;
+App.colForIdx = colForIdx;
+App.isComplete = isComplete
+App.populate = populate;
 
 export default App;
