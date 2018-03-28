@@ -193,6 +193,17 @@ function colForIdx(map, idx) {
   return idx % map.x
 }
 
+function isFilled(streak) {
+  let complete = true
+  streak.forEach((node, nodeIdx) => {
+    if (node === 0) {
+      complete = false
+      return
+    }
+  })
+  return complete
+}
+
 function isComplete(streak, userStreak) {
   let complete = true
   streak.forEach((node, nodeIdx) => {
@@ -252,7 +263,7 @@ class App extends Component {
           )
         })}
         {rows(map).map((row, rowIdx) => {
-          const rowComplete = isComplete(row, rows(this.state.userValueMap)[rowIdx])
+          const rowComplete = isFilled(rows(this.state.userValueMap)[rowIdx])
           return (
             <div key={rowIdx} className='Row'>
               {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
@@ -263,7 +274,7 @@ class App extends Component {
                 }
               })}
               {row.map((node, nodeIdx) => {
-                const colComplete = isComplete(cols(map)[nodeIdx], cols(this.state.userValueMap)[nodeIdx])
+                const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
                 return <Field key={nodeIdx}
                   height={fieldHeight}
                   value={node}
