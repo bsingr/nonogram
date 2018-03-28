@@ -11,7 +11,7 @@ class Timer extends Component {
   }
   render() {
     return (
-      <div className="Timer">
+      <div className="Timer" onClick={this.props.onClick}>
         {Math.floor(this.state.duration / 3600)}h {Math.floor(this.state.duration / 60)}m {this.state.duration % 60}s
       </div>
     );
@@ -67,6 +67,7 @@ class Field extends Component {
           'red'
         ][this.props.userValue]
       }}>
+      {this.props.helper ? this.props.value : ''}
       </div>
     );
   }
@@ -221,11 +222,13 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.onClickField = this.onClickField.bind(this)
+    this.onClickTimer = this.onClickTimer.bind(this)
     const yFields = 20;
     const xFields = 20;
     this.state = {
       map: createMap(xFields,yFields),
-      userValueMap: createUserMap(xFields, yFields)
+      userValueMap: createUserMap(xFields, yFields),
+      helper: false
     }
   }
   onClickField(idx, value) {
@@ -235,6 +238,9 @@ class App extends Component {
     userMap[idx] = value
     this.setState({userValueMap: userMap})
   }
+  onClickTimer() {
+    this.setState({helper: !this.state.helper})
+  }
   render() {
     const map = this.state.map
     const yHints = maxVerticalHints(map);
@@ -243,7 +249,7 @@ class App extends Component {
     const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
-        <Timer />
+        <Timer onClick={this.onClickTimer} />
         {mapIsComplete ? <Overlay>Done. Congratulations!</Overlay> : ''}
         {populate(yHints).map((_, rowIdx) => {
           return (
@@ -277,6 +283,7 @@ class App extends Component {
                 const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
                 return <Field key={nodeIdx}
                   height={fieldHeight}
+                  helper={this.state.helper}
                   value={node}
                   idx={rowIdx * row.length + nodeIdx}
                   userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}
