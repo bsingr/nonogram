@@ -26,7 +26,7 @@ class Timer extends Component {
   render() {
     return (
       <div className="Timer">
-        {Math.floor(this.state.duration / 3600)}h {Math.floor(this.state.duration / 60)}m {this.state.duration % 60}s
+        {Math.floor(this.state.duration / 60)}m {this.state.duration % 60}s
       </div>
     );
   }
