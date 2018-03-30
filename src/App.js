@@ -47,7 +47,7 @@ class Sizer extends Component {
     return (
       <select className="Sizer" onChange={this.props.onChange}>
         <option>5</option>
-        <option>10</option>
+        <option selected>10</option>
         <option>15</option>
         <option>20</option>
         <option>25</option>
