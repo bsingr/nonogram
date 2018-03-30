@@ -115,8 +115,8 @@ class Field extends Component {
         height: `${this.props.height}px`,
         backgroundColor: [
           'white',
-          'green',
-          'red'
+          '#bbdd00',
+          '#ff4444'
         ][this.props.userValue]
       }}>
       </div>
@@ -189,7 +189,7 @@ class App extends Component {
           {rows(map).map((row, rowIdx) => {
             const rowComplete = isFilled(rows(this.state.userValueMap)[rowIdx])
             return (
-              <div key={rowIdx} className={`Row ${rowIdx % 5 === 0 ? 'SixthRow' : ''}`}>
+              <div key={rowIdx} className={`Row ${rowIdx % 5 === 0 && rowIdx > 0 ? 'SixthRow' : ''}`}>
                 {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
                   if (hint) {
                     return <Hint key={hintIdx} value={hint} userComplete={rowComplete} />;
@@ -200,7 +200,7 @@ class App extends Component {
                 {row.map((node, nodeIdx) => {
                   const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
                   return <Field key={nodeIdx}
-                    sixth={nodeIdx % 5 === 0}
+                    sixth={nodeIdx % 5 === 0 && nodeIdx > 0}
                     value={node}
                     idx={rowIdx * row.length + nodeIdx}
                     userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}

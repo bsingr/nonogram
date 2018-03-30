@@ -43,8 +43,6 @@
 
 .Field {
   display: inline-block;
-  outline: 1px solid gray;
-  background: white;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -54,7 +52,7 @@
   border: 1px solid transparent;
 }
 
-.SixthRow .Field {
+.SixthRow .ValueField {
   border-top: 1px solid gray;
 }
 
@@ -63,7 +61,8 @@
 }
 
 .ValueField {
-  color: lightcyan;
+  outline: 1px solid gray;
+  background: white;
 }
 
 .Hint.UserComplete,
@@ -72,7 +71,7 @@
 }
 
 .Hint {
-  background: gray;
+  font-size: 11px;
 }
 
 .EmptyHint {
