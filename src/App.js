@@ -245,7 +245,6 @@ class App extends Component {
     const map = this.state.map
     const yHints = maxVerticalHints(map);
     const xHints = maxHorizontalHints(map);
-    const fieldHeight = window.innerHeight / (yHints + map.y);
     const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
