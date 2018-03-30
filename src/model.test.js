@@ -1,13 +1,20 @@
 import { 
   hints,
   createMap,
+  createUserMap,
   rows,
   cols,
   fillLeft,
   rowForIdx,
   colForIdx,
   isComplete,
-  populate
+  populate,
+  clearWrongUserValues,
+  FIELD_UNFILLED,
+  FIELD_FILLED,
+  USER_FILLED,
+  USER_UNFILLED,
+  USER_NONE
 } from './model';
 
 it('generates hints', () => {
@@ -63,4 +70,22 @@ it('gets cols', () => {
 it('gets fillLeft', () => {
   expect(fillLeft([0,1,2], 3)).toEqual([0,1,2])
   expect(fillLeft([0,1,2], 5)).toEqual([undefined,undefined,0,1,2])
+});
+
+it('clearWrongUserValues', () => {
+  const map = createMap(2,2)
+  const userMap = createUserMap(2,2)
+  map[0] = FIELD_FILLED
+  userMap[0] = USER_FILLED
+  map[1] = FIELD_FILLED
+  userMap[1] = USER_UNFILLED
+  map[2] = FIELD_UNFILLED
+  userMap[2] = USER_FILLED
+  map[3] = FIELD_UNFILLED
+  userMap[3] = USER_UNFILLED
+  const correctedUserMap = clearWrongUserValues(map,userMap)
+  expect(correctedUserMap[0]).toEqual(USER_FILLED)
+  expect(correctedUserMap[1]).toEqual(USER_NONE)
+  expect(correctedUserMap[2]).toEqual(USER_NONE)
+  expect(correctedUserMap[3]).toEqual(USER_UNFILLED)
 });

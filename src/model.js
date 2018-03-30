@@ -143,3 +143,23 @@ export function isComplete(streak, userStreak) {
   })
   return complete
 }
+
+export const FIELD_UNFILLED = 0
+export const FIELD_FILLED = 1
+export const USER_FILLED = 1
+export const USER_UNFILLED = 2
+export const USER_NONE = 0
+
+export function clearWrongUserValues(map, userMap) {
+  const newUserMap = createUserMap(userMap.x, userMap.y)
+  userMap.forEach((userValue, idx) => {
+    if ((map[idx] === FIELD_UNFILLED && userValue === USER_UNFILLED) ||
+        (map[idx] === FIELD_FILLED && userValue === USER_FILLED) ||
+        (userValue === USER_NONE)) {
+      newUserMap[idx] = userValue
+    } else {
+      newUserMap[idx] = USER_NONE
+    }
+  })
+  return newUserMap
+}

@@ -11,7 +11,8 @@ import {
   cols,
   fillLeft,
   isComplete,
-  populate
+  populate,
+  clearWrongUserValues
 } from './model.js';
 
 class Timer extends Component {
@@ -85,7 +86,6 @@ class Field extends Component {
           'red'
         ][this.props.userValue]
       }}>
-      {this.props.helper ? this.props.value : ''}
       </div>
     );
   }
@@ -100,8 +100,7 @@ class App extends Component {
     const xFields = 20;
     this.state = {
       map: createMap(xFields,yFields),
-      userValueMap: createUserMap(xFields, yFields),
-      helper: false
+      userValueMap: createUserMap(xFields, yFields)
     }
   }
   onClickField(idx, value) {
@@ -112,7 +111,9 @@ class App extends Component {
     this.setState({userValueMap: userMap})
   }
   onClickTimer() {
-    this.setState({helper: !this.state.helper})
+    this.setState({
+      userValueMap: clearWrongUserValues(this.state.map, this.state.userValueMap)
+    })
   }
   render() {
     const map = this.state.map
@@ -154,7 +155,6 @@ class App extends Component {
               {row.map((node, nodeIdx) => {
                 const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
                 return <Field key={nodeIdx}
-                  helper={this.state.helper}
                   sixth={nodeIdx % 5 === 0}
                   value={node}
                   idx={rowIdx * row.length + nodeIdx}
