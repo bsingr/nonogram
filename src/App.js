@@ -68,8 +68,13 @@ class Overlay extends Component {
 
 class EmptyHint extends Component {
   render() {
+    const className = [
+      'Field',
+      'EmptyHint',
+      this.props.userComplete ? 'UserComplete' : ''
+    ].join(' ')
     return (
-      <div className="Field EmptyHint" style={{height: `${this.props.height}px`}}>
+      <div className={className} style={{height: `${this.props.height}px`}}>
       </div>
     );
   }
@@ -77,8 +82,13 @@ class EmptyHint extends Component {
 
 class Hint extends Component {
   render() {
+    const className = [
+      'Field',
+      'Hint',
+      this.props.userComplete ? 'UserComplete' : ''
+    ].join(' ')
     return (
-      <div className="Field Hint" style={{height: `${this.props.height}px`}}>
+      <div className={className} style={{height: `${this.props.height}px`}}>
         {this.props.value}
       </div>
     );
@@ -97,8 +107,7 @@ class Field extends Component {
     const className = [
       'Field',
       'ValueField',
-      this.props.rowComplete ? 'RowComplete' : '',
-      this.props.colComplete ? 'ColComplete' : '',
+      this.props.userComplete ? 'UserComplete' : '',
       this.props.sixth ? 'SixthField' : ''
     ].join(' ')
     return (
@@ -167,10 +176,11 @@ class App extends Component {
                 })}
                 {cols(map).map((col, colIdx) => {
                   const hint = fillLeft(hints(col), yHints)[rowIdx]
+                  const colComplete = isFilled(cols(this.state.userValueMap)[colIdx])
                   if (hint) {
-                    return <Hint key={colIdx} value={hint} />;
+                    return <Hint key={colIdx} value={hint} userComplete={colComplete} />;
                   } else {
-                    return <EmptyHint key={colIdx} />;
+                    return <EmptyHint key={colIdx} userComplete={colComplete} />;
                   }
                 })}
               </div>
@@ -182,9 +192,9 @@ class App extends Component {
               <div key={rowIdx} className={`Row ${rowIdx % 5 === 0 ? 'SixthRow' : ''}`}>
                 {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
                   if (hint) {
-                    return <Hint key={hintIdx} value={hint} />;
+                    return <Hint key={hintIdx} value={hint} userComplete={rowComplete} />;
                   } else {
-                    return <EmptyHint key={hintIdx} />;
+                    return <EmptyHint key={hintIdx} userComplete={rowComplete} />;
                   }
                 })}
                 {row.map((node, nodeIdx) => {
@@ -194,8 +204,7 @@ class App extends Component {
                     value={node}
                     idx={rowIdx * row.length + nodeIdx}
                     userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}
-                    rowComplete={rowComplete}
-                    colComplete={colComplete}
+                    userComplete={rowComplete || colComplete}
                     onClick={this.onClickField}
                     />;
                 })}

@@ -27,7 +27,7 @@
   display: flex;
   width: 100%;
   height: 100%;
-  font-size: 5em;
+  font-size: 1em;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -62,18 +62,14 @@
   border-left: 1px solid gray;
 }
 
-.RowComplete {
-  opacity: 0.3;
-}
-
-.ColComplete {
-  opacity: 0.3;
-}
-
 .ValueField {
   color: lightcyan;
 }
 
+.Hint.UserComplete,
+.EmptyHint.UserComplete {
+  opacity: 0.3;
+}
 
 .Hint {
   background: gray;
