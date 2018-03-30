@@ -2,7 +2,7 @@
 export function createMap(x,y) {
   const map = []
   for (let i = 0; i < (x * y); i++) {
-    map.push(Math.random() > 0.44 ? 1 : 0)
+    map.push(Math.random() > 0.44 ? FIELD_FILLED : FIELD_UNFILLED)
   }
   map.x = x
   map.y = y
@@ -12,7 +12,7 @@ export function createMap(x,y) {
 export function createUserMap(x,y) {
   const map = []
   for (let i = 0; i < (x * y); i++) {
-    map.push(0)
+    map.push(USER_NONE)
   }
   map.x = x
   map.y = y
@@ -25,7 +25,7 @@ export function hints(streak) {
     if (nodeIdx === 0 && node === 1) {
       hints.push(1)
     } else if (nodeIdx > 0) {
-      if (node === 1) {
+      if (node === FIELD_FILLED) {
         if (streak[nodeIdx - 1] === 1) {
           hints[hints.length - 1] = hints[hints.length - 1] + 1;
         } else {
@@ -123,7 +123,7 @@ export function colForIdx(map, idx) {
 export function isFilled(streak) {
   let complete = true
   streak.forEach((node, nodeIdx) => {
-    if (node === 0) {
+    if (node === FIELD_UNFILLED) {
       complete = false
       return
     }
@@ -134,9 +134,9 @@ export function isFilled(streak) {
 export function isComplete(streak, userStreak) {
   let complete = true
   streak.forEach((node, nodeIdx) => {
-    if ((node === 0 && userStreak[nodeIdx] === 1) ||
-        (node === 1 && userStreak[nodeIdx] === 2) ||
-        (userStreak[nodeIdx] === 0)) {
+    if ((node === FIELD_UNFILLED && userStreak[nodeIdx] === USER_FILLED) ||
+        (node === FIELD_FILLED && userStreak[nodeIdx] === USER_UNFILLED) ||
+        (userStreak[nodeIdx] === USER_NONE)) {
       complete = false
       return
     }
