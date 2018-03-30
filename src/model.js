@@ -2,7 +2,7 @@
 export function createMap(x,y) {
   const map = []
   for (let i = 0; i < (x * y); i++) {
-    map.push(Math.random() > 0.3 ? FIELD_FILLED : FIELD_UNFILLED)
+    map.push(Math.random() > 0.4 ? FIELD_FILLED : FIELD_UNFILLED)
   }
   map.x = x
   map.y = y
