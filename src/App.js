@@ -42,6 +42,20 @@ class Assistant extends Component {
   }
 }
 
+class Sizer extends Component {
+  render() {
+    return (
+      <select className="Sizer" onChange={this.props.onChange}>
+        <option>5</option>
+        <option>10</option>
+        <option>15</option>
+        <option>20</option>
+        <option>25</option>
+      </select>
+    );
+  }
+}
+
 class Overlay extends Component {
   render() {
     return (
@@ -106,12 +120,20 @@ class App extends Component {
     super(props)
     this.onClickField = this.onClickField.bind(this)
     this.onClickTimer = this.onClickTimer.bind(this)
-    const yFields = 20;
-    const xFields = 20;
+    this.onChangeSize = this.onChangeSize.bind(this)
+    const yFields = 10;
+    const xFields = 10;
     this.state = {
       map: createMap(xFields,yFields),
       userValueMap: createUserMap(xFields, yFields)
     }
+  }
+  onChangeSize(event) {
+    const size = parseInt(event.target.value, 10)
+    this.setState({
+      map: createMap(size, size),
+      userValueMap: createUserMap(size, size)
+    })
   }
   onClickField(idx, value) {
     const userMap = [].concat(this.state.userValueMap)
@@ -133,6 +155,7 @@ class App extends Component {
     return (
       <div className="App">
         <Timer />
+        <Sizer onChange={this.onChangeSize} />
         <Assistant onClick={this.onClickTimer} />
         <div className="Game">
           {mapIsComplete ? <Overlay>Done. Congratulations!</Overlay> : ''}
