@@ -1,12 +1,23 @@
 .App {
   position: absolute;
   left: 50%;
-  margin-left: -25%;
+  margin-left: -25%;  
+}
+
+.Game {
+  clear: both;
+  padding-top: 5px;
 }
 
 .Timer {
-  position: absolute;
   color: gray;
+  float: left;
+}
+
+.Assistant {
+  right: 0;
+  display: inline-block;
+  float: right;
 }
 
 .Overlay {

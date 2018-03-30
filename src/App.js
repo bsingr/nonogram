@@ -25,9 +25,19 @@ class Timer extends Component {
   }
   render() {
     return (
-      <div className="Timer" onClick={this.props.onClick}>
+      <div className="Timer">
         {Math.floor(this.state.duration / 3600)}h {Math.floor(this.state.duration / 60)}m {this.state.duration % 60}s
       </div>
+    );
+  }
+}
+
+class Assistant extends Component {
+  render() {
+    return (
+      <button className="Assistant" onClick={this.props.onClick}>
+        Clear Wrong Values!
+      </button>
     );
   }
 }
@@ -122,51 +132,54 @@ class App extends Component {
     const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
-        <Timer onClick={this.onClickTimer} />
-        {mapIsComplete ? <Overlay>Done. Congratulations!</Overlay> : ''}
-        {populate(yHints).map((_, rowIdx) => {
-          return (
-            <div key={rowIdx} className="Row">
-              {populate(xHints).map((_, colIdx) => {
-                return <EmptyHint key={colIdx} />;
-              })}
-              {cols(map).map((col, colIdx) => {
-                const hint = fillLeft(hints(col), yHints)[rowIdx]
-                if (hint) {
-                  return <Hint key={colIdx} value={hint} />;
-                } else {
+        <Timer />
+        <Assistant onClick={this.onClickTimer} />
+        <div className="Game">
+          {mapIsComplete ? <Overlay>Done. Congratulations!</Overlay> : ''}
+          {populate(yHints).map((_, rowIdx) => {
+            return (
+              <div key={rowIdx} className="Row">
+                {populate(xHints).map((_, colIdx) => {
                   return <EmptyHint key={colIdx} />;
-                }
-              })}
-            </div>
-          )
-        })}
-        {rows(map).map((row, rowIdx) => {
-          const rowComplete = isFilled(rows(this.state.userValueMap)[rowIdx])
-          return (
-            <div key={rowIdx} className={`Row ${rowIdx % 5 === 0 ? 'SixthRow' : ''}`}>
-              {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
-                if (hint) {
-                  return <Hint key={hintIdx} value={hint} />;
-                } else {
-                  return <EmptyHint key={hintIdx} />;
-                }
-              })}
-              {row.map((node, nodeIdx) => {
-                const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
-                return <Field key={nodeIdx}
-                  sixth={nodeIdx % 5 === 0}
-                  value={node}
-                  idx={rowIdx * row.length + nodeIdx}
-                  userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}
-                  rowComplete={rowComplete}
-                  colComplete={colComplete}
-                  onClick={this.onClickField}
-                  />;
-              })}
-            </div>
-          )
-        })}
+                })}
+                {cols(map).map((col, colIdx) => {
+                  const hint = fillLeft(hints(col), yHints)[rowIdx]
+                  if (hint) {
+                    return <Hint key={colIdx} value={hint} />;
+                  } else {
+                    return <EmptyHint key={colIdx} />;
+                  }
+                })}
+              </div>
+            )
+          })}
+          {rows(map).map((row, rowIdx) => {
+            const rowComplete = isFilled(rows(this.state.userValueMap)[rowIdx])
+            return (
+              <div key={rowIdx} className={`Row ${rowIdx % 5 === 0 ? 'SixthRow' : ''}`}>
+                {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
+                  if (hint) {
+                    return <Hint key={hintIdx} value={hint} />;
+                  } else {
+                    return <EmptyHint key={hintIdx} />;
+                  }
+                })}
+                {row.map((node, nodeIdx) => {
+                  const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
+                  return <Field key={nodeIdx}
+                    sixth={nodeIdx % 5 === 0}
+                    value={node}
+                    idx={rowIdx * row.length + nodeIdx}
+                    userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}
+                    rowComplete={rowComplete}
+                    colComplete={colComplete}
+                    onClick={this.onClickField}
+                    />;
+                })}
+              </div>
+            )
+          })}
+        </div>
       </div>
     );
   }
