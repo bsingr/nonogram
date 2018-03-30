@@ -45,9 +45,9 @@ class Assistant extends Component {
 class Sizer extends Component {
   render() {
     return (
-      <select className="Sizer" onChange={this.props.onChange}>
+      <select className="Sizer" onChange={this.props.onChange} defaultValue={10}>
         <option>5</option>
-        <option selected>10</option>
+        <option>10</option>
         <option>15</option>
         <option>20</option>
         <option>25</option>
