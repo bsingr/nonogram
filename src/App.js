@@ -69,7 +69,13 @@ class Field extends Component {
     this.props.onClick(this.props.idx, (this.props.userValue + 1) % 3)
   }
   render() {
-    const className = `Field ValueField ${this.props.rowComplete ? 'RowComplete' : ''} ${this.props.colComplete ? 'ColComplete' : ''}`
+    const className = [
+      'Field',
+      'ValueField',
+      this.props.rowComplete ? 'RowComplete' : '',
+      this.props.colComplete ? 'ColComplete' : '',
+      this.props.sixth ? 'SixthField' : ''
+    ].join(' ')
     return (
       <div className={className} onClick={this.click} style={{
         height: `${this.props.height}px`,
@@ -137,7 +143,7 @@ class App extends Component {
         {rows(map).map((row, rowIdx) => {
           const rowComplete = isFilled(rows(this.state.userValueMap)[rowIdx])
           return (
-            <div key={rowIdx} className='Row'>
+            <div key={rowIdx} className={`Row ${rowIdx % 5 === 0 ? 'SixthRow' : ''}`}>
               {fillLeft(hints(row), xHints).map((hint, hintIdx) => {
                 if (hint) {
                   return <Hint key={hintIdx} value={hint} />;
@@ -149,6 +155,7 @@ class App extends Component {
                 const colComplete = isFilled(cols(this.state.userValueMap)[nodeIdx])
                 return <Field key={nodeIdx}
                   helper={this.state.helper}
+                  sixth={nodeIdx % 5 === 0}
                   value={node}
                   idx={rowIdx * row.length + nodeIdx}
                   userValue={this.state.userValueMap[rowIdx * row.length + nodeIdx]}

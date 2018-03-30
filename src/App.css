@@ -24,6 +24,7 @@
   display: flex;
   flex: 0 1 auto;
   flex-direction: row;
+  border-top: 0px solid transparent;
 }
 
 .Field {
@@ -36,6 +37,15 @@
   width: 25px;
   height: 25px;
   line-height: 25px;
+  border: 1px solid transparent;
+}
+
+.SixthRow .Field {
+  border-top: 1px solid gray;
+}
+
+.SixthField {
+  border-left: 1px solid gray;
 }
 
 .RowComplete {
@@ -49,9 +59,7 @@
 .ValueField {
   color: lightcyan;
 }
-.ValueField:nth-of-type(6n+0) {
-  border-left: 1px solid gray;
-}
+
 
 .Hint {
   background: gray;
