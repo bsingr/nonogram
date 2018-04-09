@@ -15,18 +15,15 @@ import {
   clearWrongUserValues
 } from './model.js';
 
+function renderDuration(duration) {
+  return `${Math.floor(duration / 60)}m ${duration % 60}s`
+}
+
 class Timer extends Component {
-  constructor() {
-    super()
-    this.state = {duration: 0}
-    this.state.interval = setInterval(() => {
-      this.setState({duration: this.state.duration + 1})
-    }, 1000)
-  }
   render() {
     return (
       <div className="Timer">
-        {Math.floor(this.state.duration / 60)}m {this.state.duration % 60}s
+        {renderDuration(this.props.duration)}
       </div>
     );
   }
@@ -134,8 +131,12 @@ class App extends Component {
     const xFields = 10;
     this.state = {
       map: createMap(xFields,yFields),
-      userValueMap: createUserMap(xFields, yFields)
+      userValueMap: createUserMap(xFields, yFields),
+      duration: 0
     }
+    this.interval = setInterval(() => {
+      this.setState({duration: this.state.duration + 1})
+    }, 1000)
   }
   onChangeSize(event) {
     const size = parseInt(event.target.value, 10)
@@ -150,6 +151,9 @@ class App extends Component {
     userMap.y = this.state.userValueMap.y
     userMap[idx] = value
     this.setState({userValueMap: userMap})
+    if (isComplete(this.state.map, userMap)) {
+      clearInterval(this.interval)
+    }
   }
   onClickTimer() {
     this.setState({
@@ -163,11 +167,11 @@ class App extends Component {
     const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
-        <Timer />
+        <Timer duration={this.state.duration} />
         <Sizer onChange={this.onChangeSize} />
         <Assistant onClick={this.onClickTimer} />
         <div className="Game">
-          {mapIsComplete ? <Overlay>Done. Congratulations!</Overlay> : ''}
+          {mapIsComplete ? <Overlay>Done. Congratulations!<br/>{renderDuration(this.state.duration)}</Overlay> : ''}
           {populate(yHints).map((_, rowIdx) => {
             return (
               <div key={rowIdx} className="Row">
