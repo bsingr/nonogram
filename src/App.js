@@ -42,7 +42,7 @@ class Assistant extends Component {
 class Sizer extends Component {
   render() {
     return (
-      <select className="Sizer" onChange={this.props.onChange} defaultValue={10}>
+      <select className="Sizer" onChange={this.props.onChange} defaultValue={this.props.defaultValue || 10}>
         <option>5</option>
         <option>10</option>
         <option>15</option>
@@ -121,17 +121,25 @@ class Field extends Component {
   }
 }
 
+function getSizeFromLocation() {
+  const size = parseInt(document.location.hash.replace("#",""), 10)
+  return size || 10
+}
+
+function setSizeToLocation(size) {
+  document.location.hash = `#${size}`
+}
+
 class App extends Component {
   constructor(props) {
     super(props)
     this.onClickField = this.onClickField.bind(this)
     this.onClickTimer = this.onClickTimer.bind(this)
     this.onChangeSize = this.onChangeSize.bind(this)
-    const yFields = 10;
-    const xFields = 10;
+    const defaultSize = getSizeFromLocation()
     this.state = {
-      map: createMap(xFields,yFields),
-      userValueMap: createUserMap(xFields, yFields),
+      map: createMap(defaultSize,defaultSize),
+      userValueMap: createUserMap(defaultSize, defaultSize),
       duration: 0
     }
     this.interval = setInterval(() => {
@@ -140,6 +148,7 @@ class App extends Component {
   }
   onChangeSize(event) {
     const size = parseInt(event.target.value, 10)
+    setSizeToLocation(size)
     this.setState({
       map: createMap(size, size),
       userValueMap: createUserMap(size, size)
@@ -168,7 +177,7 @@ class App extends Component {
     return (
       <div className="App">
         <Timer duration={this.state.duration} />
-        <Sizer onChange={this.onChangeSize} />
+        <Sizer onChange={this.onChangeSize} defaultValue={getSizeFromLocation()} />
         <Assistant onClick={this.onClickTimer} />
         <div className="Game">
           {mapIsComplete ? <Overlay>Done. Congratulations!<br/>{renderDuration(this.state.duration)}</Overlay> : ''}
