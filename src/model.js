@@ -23,8 +23,8 @@ export function createHeartMap(x,y) {
   }
   const map = []
   for (let i = 0; i < (x * y); i++) {
-    let value = FIELD_UNFILLED
-    if (heartMap[i] === 1) value = FIELD_FILLED
+    let value = FIELD_FILLED
+    if (heartMap[i] === 1) value = FIELD_UNFILLED
     map.push(value)
   }
   map.x = x
