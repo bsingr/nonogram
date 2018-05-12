@@ -13,7 +13,8 @@ import {
   fillLeft,
   isComplete,
   populate,
-  clearWrongUserValues
+  clearWrongUserValues,
+  solveUserValues
 } from './model.js';
 
 class Timer extends Component {
@@ -146,13 +147,18 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.onClickField = this.onClickField.bind(this)
-    this.onClickTimer = this.onClickTimer.bind(this)
+    this.onClickAssistant = this.onClickAssistant.bind(this)
     this.onChangeSize = this.onChangeSize.bind(this)
     const defaultSize = getSizeFromLocation()
     this.state = resetMapState(defaultSize)
     this.interval = setInterval(() => {
       this.setState({duration: this.state.duration + 1})
     }, 1000)
+    window.RUN_SOLVER = () => {
+      this.setState({
+        userValueMap: solveUserValues(this.state.map, this.state.userValueMap)
+      })
+    }
   }
   onChangeSize(event) {
     const size = parseInt(event.target.value, 10)
@@ -169,7 +175,7 @@ class App extends Component {
       clearInterval(this.interval)
     }
   }
-  onClickTimer() {
+  onClickAssistant() {
     this.setState({
       userValueMap: clearWrongUserValues(this.state.map, this.state.userValueMap)
     })
@@ -229,7 +235,7 @@ class App extends Component {
         </div>
         <Timer duration={this.state.duration} />
         <Sizer onChange={this.onChangeSize} defaultValue={getSizeFromLocation()} />
-        <Assistant onClick={this.onClickTimer} />
+        <Assistant onClick={this.onClickAssistant} />
       </div>
     );
   }

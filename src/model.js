@@ -196,3 +196,15 @@ export function clearWrongUserValues(map, userMap) {
   })
   return newUserMap
 }
+
+export function solveUserValues(map, userMap) {
+  const newUserMap = createUserMap(userMap.x, userMap.y)
+  userMap.forEach((userValue, idx) => {
+    if (map[idx] === FIELD_FILLED) {
+      newUserMap[idx] = USER_FILLED
+    } else {
+      newUserMap[idx] = USER_UNFILLED
+    }
+  })
+  return newUserMap
+}
