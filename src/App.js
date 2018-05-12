@@ -181,9 +181,6 @@ class App extends Component {
     const mapIsComplete = isComplete(map, this.state.userValueMap)
     return (
       <div className="App">
-        <Timer duration={this.state.duration} />
-        <Sizer onChange={this.onChangeSize} defaultValue={getSizeFromLocation()} />
-        <Assistant onClick={this.onClickTimer} />
         <div className="Game">
           {mapIsComplete ? <Overlay>Done. Congratulations!<br/>{renderDuration(this.state.duration)}</Overlay> : ''}
           {populate(yHints).map((_, rowIdx) => {
@@ -230,6 +227,9 @@ class App extends Component {
             )
           })}
         </div>
+        <Timer duration={this.state.duration} />
+        <Sizer onChange={this.onChangeSize} defaultValue={getSizeFromLocation()} />
+        <Assistant onClick={this.onClickTimer} />
       </div>
     );
   }
