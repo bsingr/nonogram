@@ -16,10 +16,6 @@ import {
   clearWrongUserValues
 } from './model.js';
 
-function renderDuration(duration) {
-  return `${Math.floor(duration / 60)}m ${duration % 60}s`
-}
-
 class Timer extends Component {
   render() {
     return (
@@ -120,6 +116,10 @@ class Field extends Component {
       </div>
     );
   }
+}
+
+function renderDuration(duration) {
+  return `${Math.floor(duration / 60)}m ${duration % 60}s`
 }
 
 function getSizeFromLocation() {
