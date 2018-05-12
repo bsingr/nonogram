@@ -133,7 +133,7 @@ function setSizeToLocation(size) {
 
 function resetMapState(size) {
   let createMapFn = createMap
-  // every random time render a heart
+  // render heart randomly
   if (Math.random() < 0.15) createMapFn = createHeartMap
   return {
     map: createMapFn(size, size),
