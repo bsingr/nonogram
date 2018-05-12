@@ -1,3 +1,36 @@
+// minsize = 10
+export function createHeartMap(x,y) {
+  const heartMap = [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+    0, 1, 1, 1, 0, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+    0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+  ]
+  const diff = x - 10
+  for (let i = 0; i < heartMap.length; i++) {
+    if (i % x === 0) {
+      for (let j = 0; j < diff; j++) {
+        heartMap.splice(i, 0, 0)
+        i++
+      }
+    }
+  }
+  const map = []
+  for (let i = 0; i < (x * y); i++) {
+    let value = FIELD_UNFILLED
+    if (heartMap[i] === 1) value = FIELD_FILLED
+    map.push(value)
+  }
+  map.x = x
+  map.y = y
+  return map
+}
 
 export function createMap(x,y) {
   const map = []

@@ -3,6 +3,7 @@ import './App.css';
 import { 
   hints,
   createMap,
+  createHeartMap,
   createUserMap,
   maxVerticalHints,
   maxHorizontalHints,
@@ -130,6 +131,17 @@ function setSizeToLocation(size) {
   document.location.hash = `#${size}`
 }
 
+function resetMapState(size) {
+  let createMapFn = createMap
+  // every random time render a heart
+  if (Math.random() < 0.15) createMapFn = createHeartMap
+  return {
+    map: createMapFn(size, size),
+    userValueMap: createUserMap(size, size),
+    duration: 0
+  }
+}
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -137,11 +149,7 @@ class App extends Component {
     this.onClickTimer = this.onClickTimer.bind(this)
     this.onChangeSize = this.onChangeSize.bind(this)
     const defaultSize = getSizeFromLocation()
-    this.state = {
-      map: createMap(defaultSize,defaultSize),
-      userValueMap: createUserMap(defaultSize, defaultSize),
-      duration: 0
-    }
+    this.state = resetMapState(defaultSize)
     this.interval = setInterval(() => {
       this.setState({duration: this.state.duration + 1})
     }, 1000)
@@ -149,10 +157,7 @@ class App extends Component {
   onChangeSize(event) {
     const size = parseInt(event.target.value, 10)
     setSizeToLocation(size)
-    this.setState({
-      map: createMap(size, size),
-      userValueMap: createUserMap(size, size)
-    })
+    this.setState(resetMapState(size))
   }
   onClickField(idx, value) {
     const userMap = [].concat(this.state.userValueMap)
